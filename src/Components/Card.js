@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Notification from "./Notification";
+import Header from "./Header";
 
 const Card = () => {
   const [data, setData] = useState([]);
@@ -39,17 +40,19 @@ const Card = () => {
   };
 
   return (
-    <div className="Content">
-      {data.map((c) => {
-        return (
-          <div className="number" key={c.id}>
-            <div className="fullName">{`${c.name} ${c.id}`}</div>
-            <Notification data={c} />
-            {/* <span className="NotificationCount">{c.itemCount}</span> */}
-          </div>
-        );
-      })}
-    </div>
+    <>
+      <Header />
+      <div className="Content">
+        {data.map((c) => {
+          return (
+            <div className="number" key={c.id}>
+              <div className="fullName">{`${c.name} ${c.id}`}</div>
+              <Notification data={c} />
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 };
 

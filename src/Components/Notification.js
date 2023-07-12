@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const Notification = ({ data }) => {
-  //   let storedReadData = JSON.parse(localStorage.getItem(`${data.id}`));
-  //   let calculatedLength = data.itemCount - storedReadData?.length;
-  //   let displayNotification = calculatedLength
-  //     ? calculatedLength
-  //     : data.itemCount;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [unread, setUnread] = useState(data.itemCount);
   const [isClicked, setIsClicked] = useState([]);
@@ -18,14 +13,10 @@ const Notification = ({ data }) => {
   };
 
   const handleClose = () => {
-    // let isSeenArr = [...isSeenData];
     setIsDialogOpen(false);
-
     if (data.id) {
-      //   let readNotifications = JSON.parse(localStorage.getItem(`${data.id}`));
       let arrLength = isClicked.length;
       let currLength = data.itemCount - arrLength;
-      console.log(currLength);
       setUnread(currLength);
     }
   };
@@ -36,8 +27,6 @@ const Notification = ({ data }) => {
     setIsClicked([...new Set([...isClicked, ...isSeenArr])]);
     const randomColor = getRandomColor();
     setRandomColor(randomColor);
-    // let x = isClicked.length != 0 ? isClicked : isSeenArr;
-    // localStorage.setItem(`${data.id}`, JSON.stringify(x));
     console.log("val", val, "isSeenArr", isSeenArr, "local");
   };
 

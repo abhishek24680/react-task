@@ -1,11 +1,17 @@
 import React from "react";
 
-const Header = () => {
+const Header = (props) => {
   return (
     <header className="header">
       <div className="container">
         <p>{"Logo"}</p>
-        <input className="searchBox" type="text" placeholder="Search" />
+        <input
+          value={props.value}
+          className="searchBox"
+          onChange={props.searchFn}
+          type="text"
+          placeholder="Search"
+        />
       </div>
     </header>
   );

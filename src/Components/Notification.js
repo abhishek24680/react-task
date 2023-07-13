@@ -39,9 +39,11 @@ const Notification = ({ data }) => {
   return (
     <div>
       <div>
-        <div className="NotificationCount" onClick={handleDialog}>
-          {unread}
-        </div>
+        {unread !== 0 && (
+          <div className="NotificationCount" onClick={handleDialog}>
+            {unread}
+          </div>
+        )}
       </div>
       {isDialogOpen && (
         <div class="modal">
@@ -54,6 +56,7 @@ const Notification = ({ data }) => {
                 return (
                   <p
                     key={c.id}
+                    className="Popup-Title"
                     style={{
                       color: isClicked.includes(c.id) ? randomColor : "black",
                     }}

@@ -5,12 +5,9 @@ import Header from "./Header";
 
 const Card = () => {
   const [data, setData] = useState([]);
-  const [resData, setResData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isHandleSearchCalled, SetIsHandleSearchCalled] = useState(false);
-  const [TitleId, SetTitleId] = useState([]);
-  let isTitleSeen = new Set();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +16,6 @@ const Card = () => {
           "https://jsonplaceholder.typicode.com/albums"
         );
         let cardData = response.data;
-        setResData(cardData);
         let uniqueUserIds = [...new Set(cardData.map((c) => c.userId))];
         const usersData = uniqueUserIds.map((userId) => {
           const userAlbums = cardData.filter((c) => c.userId === userId);
@@ -28,9 +24,15 @@ const Card = () => {
             id: album.id,
             title: album.title,
           }));
-          return { id: userId, name: getRandomName(), itemCount, items };
+          let userName = getRandomName();
+          let fullName = userName + userId;
+          return {
+            id: userId,
+            itemCount,
+            items,
+            fullName: fullName,
+          };
         });
-        console.log(usersData);
         setData(usersData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -44,9 +46,11 @@ const Card = () => {
     setSearchTerm(e.target.value);
     SetIsHandleSearchCalled(true);
     if (e.target.value !== "") {
-      const results = resData.filter((item) =>
-        item.title.toLowerCase().includes(e.target.value.toLowerCase())
-      );
+      const results = data.filter((item) => {
+        return item.fullName
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase());
+      });
       setSearchResults(results);
     } else {
       setSearchResults([]);
@@ -55,40 +59,36 @@ const Card = () => {
   };
 
   const getRandomName = () => {
-    const names = ["ab", "cd", "ef", "gh", "ij"];
+    const names = ["ab", "cd", "ef", "gh", "ij", "kl", "mn", "op"];
     const randomIndex = Math.floor(Math.random() * names.length);
     return names[randomIndex];
-  };
-
-  const handleTitle = (id) => {
-    console.log(id);
-    isTitleSeen.add(id);
-    let isSeenArr = [...isTitleSeen];
-    SetTitleId([...new Set([...TitleId, ...isSeenArr])]);
   };
 
   return (
     <>
       <Header searchFn={handleSearch} value={searchTerm} />
-      <div>
-        <ul>
-          {searchResults.length !== 0 ? (
-            searchResults.map((item) => (
-              <li className="TitleItems" key={item.id}>
-                <p onClick={() => handleTitle(item.id)}>{item.title}</p>
-              </li>
-            ))
-          ) : (
-            <p>{isHandleSearchCalled ? "No results found" : ""}</p>
-          )}
-        </ul>
-      </div>
+
+      {searchResults.length !== 0 ? (
+        <div className="Content">
+          {searchResults.map((item) => (
+            <div className="number" key={item.id}>
+              <div className="fullName">{item.fullName}</div>
+              <Notification data={item} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="NoResult">
+          {isHandleSearchCalled ? "No results found" : ""}
+        </p>
+      )}
+
       {searchResults.length === 0 && searchTerm === "" && (
         <div className="Content">
           {data.map((c) => {
             return (
               <div className="number" key={c.id}>
-                <div className="fullName">{`${c.name} ${c.id}`}</div>
+                <div className="fullName">{c.fullName}</div>
                 <Notification data={c} />
               </div>
             );

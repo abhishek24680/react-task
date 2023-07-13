@@ -28,13 +28,17 @@
   justify-content: space-between;
   height: 280px;
   background-color: #9cd8f2;
+  margin: 10px;
 }
 
 .NotificationCount {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: white;
-  border-radius: 32%;
-  height: 28px;
-  width: 30px;
+  border-radius: 46%;
+  height: 60px;
+  width: 60px;
   background-color: #7471e4;
   text-align: center;
   position: relative;
@@ -44,6 +48,13 @@
 
 .fullName {
   margin-left: 40%;
+  display: flex;
+  background-color: white;
+  height: 45px;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  border-radius: 28px;
 }
 
 .dialog {
@@ -87,7 +98,46 @@
   width: fit-content;
 }
 
-.TitleItems {
-  cursor: pointer;
-  width: fit-content;
+.NoResult {
+  display: flex;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+    width: 100%;
+  }
+  .Content {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 20px;
+    padding: 20px;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  body {
+    width: 100%;
+  }
+  .Content {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 20px;
+    padding: 20px;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  body {
+    width: 100%;
+  }
+  .Content {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    grid-gap: 20px;
+    padding: 20px;
+  }
 }

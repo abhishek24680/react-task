@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Notification = ({ data }) => {
+  let storedReadData = JSON.parse(localStorage.getItem(`${data.id}`));
+  let displayNotification = storedReadData ? storedReadData : data.itemCount;
+  let storedClickedData = JSON.parse(localStorage.getItem(`ID${data.id}`));
+  let setClickedStore = storedClickedData?.length > 0 ? storedClickedData : [];
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [unread, setUnread] = useState(data.itemCount);
-  const [isClicked, setIsClicked] = useState([]);
+  const [unread, setUnread] = useState(displayNotification);
+  const [isClicked, setIsClicked] = useState(setClickedStore || []);
   const [randomColor, setRandomColor] = useState("black");
 
   let isSeenData = new Set();
@@ -12,11 +16,17 @@ const Notification = ({ data }) => {
     setIsDialogOpen(true);
   };
 
+  useEffect(() => {
+    const randomColor = getRandomColor();
+    setRandomColor(randomColor);
+  }, [isDialogOpen]);
+
   const handleClose = () => {
     setIsDialogOpen(false);
     if (data.id) {
       let arrLength = isClicked.length;
       let currLength = data.itemCount - arrLength;
+      localStorage.setItem(`${data.id}`, JSON.stringify(currLength));
       setUnread(currLength);
     }
   };
@@ -25,6 +35,10 @@ const Notification = ({ data }) => {
     isSeenData.add(val);
     let isSeenArr = [...isSeenData];
     setIsClicked([...new Set([...isClicked, ...isSeenArr])]);
+    localStorage.setItem(
+      `ID${data.id}`,
+      JSON.stringify([...new Set([...isClicked, ...isSeenArr])])
+    );
     const randomColor = getRandomColor();
     setRandomColor(randomColor);
     console.log("val", val, "isSeenArr", isSeenArr, "local");

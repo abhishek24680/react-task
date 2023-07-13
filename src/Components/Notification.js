@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 
 const Notification = ({ data }) => {
   let storedReadData = JSON.parse(localStorage.getItem(`${data.id}`));
-  let displayNotification = storedReadData ? storedReadData : data.itemCount;
+  let displayNotification =
+    storedReadData !== 10 && storedReadData != undefined
+      ? storedReadData
+      : data.itemCount;
   let storedClickedData = JSON.parse(localStorage.getItem(`ID${data.id}`));
   let setClickedStore = storedClickedData?.length > 0 ? storedClickedData : [];
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -52,12 +55,8 @@ const Notification = ({ data }) => {
 
   return (
     <div>
-      <div>
-        {unread !== 0 && (
-          <div className="NotificationCount" onClick={handleDialog}>
-            {unread}
-          </div>
-        )}
+      <div className="NotificationCount" onClick={handleDialog}>
+        {unread}
       </div>
       {isDialogOpen && (
         <div class="modal">
